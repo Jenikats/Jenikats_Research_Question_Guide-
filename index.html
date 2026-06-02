@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>How to Write a Research Question — Interactive Guide</title>
+<style>
+  :root {
+    --blue-dark: #1a3a5c;
+    --blue-mid: #2563a8;
+    --blue-light: #3b82f6;
+    --blue-pale: #dbeafe;
+    --teal: #0891b2;
+    --teal-light: #cffafe;
+    --green: #059669;
+    --green-light: #d1fae5;
+    --amber: #d97706;
+    --amber-light: #fef3c7;
+    --red: #dc2626;
+    --red-light: #fee2e2;
+    --purple: #7c3aed;
+    --purple-light: #ede9fe;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-400: #94a3b8;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --gray-900: #0f172a;
+    --white: #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--gray-900);
+    color: var(--gray-800);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ─── TOP BAR ─────────────────────────────── */
+  #topbar {
+    background: var(--gray-900);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    height: 52px;
+    flex-shrink: 0;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  #topbar .title { font-size: 13px; font-weight: 600; opacity: .85; letter-spacing: .3px; }
+  #topbar .nav-btns { display: flex; gap: 8px; align-items: center; }
+  .nav-btn {
+    background: rgba(255,255,255,.1);
+    border: none;
+    color: white;
+    border-radius: 6px;
+    padding: 6px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,.2); }
+  .nav-btn:disabled { opacity: .3; cursor: default; }
+  #slide-counter { font-size: 12px; opacity: .6; min-width: 60px; text-align: center; }
+
+  /* Section pills */
+  #section-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 0 24px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  #section-tabs::-webkit-scrollbar { display: none; }
+  .sec-tab {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,.5);
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .15s;
+  }
+  .sec-tab.active { background: rgba(255,255,255,.12); color: white; }
+  .sec-tab:hover { color: white; }
+
+  /* ─── PROGRESS BAR ─────────────────────────── */
+  #progress-bar {
+    height: 3px;
+    background: var(--gray-700);
+    flex-shrink: 0;
+  }
+  #progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue-light), var(--teal));
+    transition: width .35s ease;
+  }
+
+  /* ─── SLIDE VIEWPORT ─────────────────────────── */
+  #slides-viewport {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    display: none;
+    padding: 40px 60px;
+    background: var(--gray-50);
+    scrollbar-width: thin;
+  }
+  .slide.active { display: flex; flex-direction: column; animation: fadeIn .3s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── SLIDE LAYOUTS ─────────────────────────── */
+  .slide-hero {
+    background: linear-gradient(135deg, var(--blue-dark) 0%, #0f3460 50%, var(--teal) 100%);
+    color: white;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px;
+  }
+  .slide-hero .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 20px;
+    padding: 6px 18px;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .slide-hero h1 {
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    max-width: 700px;
+  }
+  .slide-hero .subtitle {
+    font-size: 18px;
+    opacity: .8;
+    max-width: 560px;
+    line-height: 1.6;
+    margin-bottom: 36px;
+  }
+  .hero-chips { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .hero-chip {
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  /* Content slides */
+  .slide-header {
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--blue-light);
+  }
+  .slide-tag {
+    display: inline-block;
+    background: var(--blue-pale);
+    color: var(--blue-mid);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  .slide h2 { font-size: clamp(20px, 2.5vw, 30px); font-weight: 800; color: var(--blue-dark); line-height: 1.2; }
+  .slide .lead { font-size: 16px; color: var(--gray-600); margin-top: 8px; line-height: 1.6; }
+
+  /* ─── COMPONENTS ─────────────────────────────── */
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.04);
+    border: 1px solid var(--gray-200);
+  }
+  .card h3 { font-size: 15px; font-weight: 700; color: var(--blue-dark); margin-bottom: 8px; }
+  .card p, .card li { font-size: 14px; color: var(--gray-700); line-height: 1.65; }
+  .card ul { padding-left: 18px; }
+  .card ul li { margin-bottom: 5px; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+  /* Accent cards */
+  .card-blue  { border-left: 4px solid var(--blue-light); }
+  .card-teal  { border-left: 4px solid var(--teal); }
+  .card-green { border-left: 4px solid var(--green); }
+  .card-amber { border-left: 4px solid var(--amber); }
+  .card-red   { border-left: 4px solid var(--red); }
+  .card-purple{ border-left: 4px solid var(--purple); }
+
+  /* Table */
+  .tbl-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--gray-200); background: white; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th { background: var(--blue-dark); color: white; padding: 11px 16px; text-align: left; font-weight: 600; font-size: 12px; letter-spacing: .5px; }
+  td { padding: 10px 16px; border-bottom: 1px solid var(--gray-100); color: var(--gray-700); vertical-align: top; line-height: 1.55; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--gray-50); }
+
+  /* Compare blocks */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .compare-box { border-radius: 10px; padding: 18px 20px; }
+  .compare-weak { background: var(--red-light); border: 1px solid #fca5a5; }
+  .compare-strong { background: var(--green-light); border: 1px solid #6ee7b7; }
+  .compare-label { font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .compare-weak .compare-label { color: var(--red); }
+  .compare-strong .compare-label { color: var(--green); }
+  .compare-box p { font-size: 14px; line-height: 1.6; }
+
+  /* Steps */
+  .steps { display: flex; flex-direction: column; gap: 12px; }
+  .step { display: flex; gap: 14px; align-items: flex-start; }
+  .step-num {
+    width: 32px; height: 32px; min-width: 32px;
+    background: linear-gradient(135deg, var(--blue-mid), var(--teal));
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800;
+  }
+  .step-body h4 { font-size: 14px; font-weight: 700; color: var(--blue-dark); margin-bottom: 3px; }
+  .step-body p { font-size: 13.5px; color: var(--gray-600); line-height: 1.6; }
+
+  /* Badges */
+  .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 10px; border-radius: 20px;
+    font-size: 12px; font-weight: 600;
+  }
+  .badge-blue  { background: var(--blue-pale);  color: var(--blue-mid); }
+  .badge-teal  { background: var(--teal-light); color: var(--teal); }
+  .badge-green { background: var(--green-light);color: var(--green); }
+  .badge-amber { background: var(--amber-light);color: var(--amber); }
+  .badge-purple{ background: var(--purple-light);color: var(--purple); }
+
+  /* highlight box */
+  .highlight-box {
+    background: linear-gradient(135deg, var(--blue-pale), var(--teal-light));
+    border: 1px solid #bae6fd;
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 20px;
+  }
+  .highlight-box p { font-size: 15px; color: var(--blue-dark); font-weight: 500; line-height: 1.7; }
+
+  /* ─── FINER CARDS ────────────────────────────── */
+  .finer-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .finer-card {
+    border-radius: 10px;
+    padding: 14px 12px;
+    text-align: center;
+    cursor: default;
+    transition: transform .2s;
+  }
+  .finer-card:hover { transform: translateY(-3px); }
+  .finer-card .letter { font-size: 32px; font-weight: 900; margin-bottom: 4px; }
+  .finer-card .word  { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+  .finer-card .desc  { font-size: 11.5px; line-height: 1.5; opacity: .85; }
+  .fc-f { background: #eff6ff; color: #1d4ed8; }
+  .fc-i { background: #f0fdf4; color: #15803d; }
+  .fc-n { background: #faf5ff; color: #6d28d9; }
+  .fc-e { background: #fff7ed; color: #c2410c; }
+  .fc-r { background: #fef2f2; color: #b91c1c; }
+
+  /* ─── SIMULATOR ────────────────────────────── */
+  #sim-container {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,.08);
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  #sim-header {
+    background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
+    color: white;
+    padding: 20px 28px;
+    flex-shrink: 0;
+  }
+  #sim-header h3 { font-size: 18px; font-weight: 800; }
+  #sim-header p  { font-size: 13px; opacity: .8; margin-top: 4px; }
+  #sim-progress-bar { height: 4px; background: rgba(255,255,255,.2); }
+  #sim-progress-fill { height: 100%; background: #60a5fa; transition: width .4s ease; }
+
+  #sim-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .sim-step { display: none; flex-direction: column; gap: 14px; animation: fadeIn .3s ease; }
+  .sim-step.active { display: flex; }
+
+  .sim-q-label {
+    font-size: 13px; font-weight: 700; color: var(--blue-mid);
+    text-transform: uppercase; letter-spacing: .8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sim-q-label span { background: var(--blue-pale); border-radius: 4px; padding: 2px 8px; }
+  .sim-question { font-size: 17px; font-weight: 700; color: var(--gray-800); line-height: 1.45; }
+  .sim-hint { font-size: 13px; color: var(--gray-500); line-height: 1.6; background: var(--gray-50); border-radius: 8px; padding: 10px 14px; border-left: 3px solid var(--blue-light); }
+
+  .sim-input {
+    width: 100%; padding: 12px 16px;
+    border: 2px solid var(--gray-200);
+    border-radius: 10px; font-size: 14px;
+    color: var(--gray-800); background: var(--gray-50);
+    transition: border-color .2s, box-shadow .2s;
+    font-family: inherit; resize: vertical;
+  }
+  .sim-input:focus { outline: none; border-color: var(--blue-light); box-shadow: 0 0 0 3px rgba(59,130,246,.12); background: white; }
+
+  .sim-radio-group { display: flex; flex-direction: column; gap: 8px; }
+  .sim-radio {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 16px; border: 2px solid var(--gray-200);
+    border-radius: 10px; cursor: pointer;
+    transition: all .2s; background: white;
+  }
+  .sim-radio:hover { border-color: var(--blue-light); background: var(--blue-pale); }
+  .sim-radio.selected { border-color: var(--blue-light); background: var(--blue-pale); }
+  .sim-radio input[type=radio] { margin-top: 2px; accent-color: var(--blue-mid); }
+  .sim-radio .r-label { font-size: 14px; font-weight: 600; color: var(--gray-800); }
+  .sim-radio .r-desc  { font-size: 12px; color: var(--gray-500); margin-top: 2px; }
+
+  #sim-footer {
+    padding: 16px 32px;
+    border-top: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--gray-50);
+    flex-shrink: 0;
+  }
+  .sim-btn {
+    padding: 10px 24px; border-radius: 8px;
+    font-size: 14px; font-weight: 700;
+    cursor: pointer; border: none;
+    transition: all .2s;
+  }
+  .sim-btn-primary { background: var(--blue-mid); color: white; }
+  .sim-btn-primary:hover { background: var(--blue-dark); }
+  .sim-btn-secondary { background: var(--gray-100); color: var(--gray-600); }
+  .sim-btn-secondary:hover { background: var(--gray-200); }
+  .sim-btn:disabled { opacity: .4; cursor: not-allowed; }
+
+  /* Result box */
+  #sim-result {
+    display: none; flex-direction: column; gap: 16px;
+    animation: fadeIn .4s ease;
+  }
+  #sim-result.visible { display: flex; }
+  .result-rq {
+    background: linear-gradient(135deg, var(--blue-dark) 0%, #0f3460 100%);
+    color: white; border-radius: 14px; padding: 28px 32px;
+    position: relative; overflow: hidden;
+  }
+  .result-rq::before {
+    content: '"';
+    position: absolute; top: -10px; left: 16px;
+    font-size: 120px; opacity: .08; font-family: Georgia, serif; line-height: 1;
+  }
+  .result-rq .rq-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; opacity: .7; margin-bottom: 10px; }
+  .result-rq .rq-text { font-size: 18px; font-weight: 700; line-height: 1.55; position: relative; z-index: 1; }
+  .result-checklist { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .check-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: white; border-radius: 10px;
+    padding: 12px 14px; border: 1px solid var(--gray-200);
+  }
+  .check-icon { font-size: 18px; flex-shrink: 0; }
+  .check-item p { font-size: 13px; color: var(--gray-700); line-height: 1.5; }
+  .check-item strong { display: block; font-size: 12px; color: var(--blue-dark); font-weight: 700; margin-bottom: 2px; }
+  .result-tips {
+    background: var(--amber-light); border: 1px solid #fde68a;
+    border-radius: 10px; padding: 16px 18px;
+  }
+  .result-tips h4 { font-size: 13px; font-weight: 700; color: var(--amber); margin-bottom: 8px; }
+  .result-tips ul { padding-left: 16px; }
+  .result-tips li { font-size: 13px; color: var(--gray-700); margin-bottom: 4px; line-height: 1.55; }
+
+  /* ─── FLOWCHART ────────────────────────────── */
+  #flowchart-wrap {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  #fc-header {
+    background: linear-gradient(135deg, #0f172a, #1e3a5f);
+    color: white;
+    padding: 18px 24px;
+    flex-shrink: 0;
+  }
+  #fc-header h3 { font-size: 17px; font-weight: 800; }
+  #fc-header p  { font-size: 13px; opacity: .75; margin-top: 4px; }
+  #fc-body {
+    flex: 1; overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Flowchart nodes */
+  .fc-node {
+    border-radius: 10px;
+    padding: 14px 20px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    position: relative;
+  }
+  .fc-start { background: var(--blue-dark); color: white; border-radius: 30px; font-size: 15px; }
+  .fc-question { background: #eff6ff; border: 2px solid var(--blue-light); color: var(--blue-dark); border-radius: 0; transform: rotate(0deg); clip-path: polygon(20px 0%, calc(100% - 20px) 0%, 100% 50%, calc(100% - 20px) 100%, 20px 100%, 0% 50%); padding: 16px 40px; }
+  .fc-action { background: white; border: 2px solid var(--gray-300); color: var(--gray-700); }
+  .fc-end-pass { background: var(--green); color: white; border-radius: 30px; }
+  .fc-end-revise { background: var(--amber); color: white; border-radius: 30px; }
+
+  .fc-arrow {
+    width: 2px; background: var(--gray-300);
+    margin: 0 auto;
+    position: relative;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .fc-arrow::after {
+    content: '▼'; color: var(--gray-400);
+    font-size: 12px; margin-top: 2px;
+  }
+  .fc-branch {
+    display: flex; gap: 20px; align-items: flex-start;
+    width: 100%; max-width: 680px; justify-content: center;
+  }
+  .fc-branch-arm {
+    display: flex; flex-direction: column; align-items: center;
+    flex: 1; gap: 0;
+  }
+  .fc-label {
+    font-size: 11px; font-weight: 800;
+    letter-spacing: .8px; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 20px;
+    margin: 4px 0;
+  }
+  .fc-label-yes { background: var(--green-light); color: var(--green); }
+  .fc-label-no  { background: var(--red-light);   color: var(--red); }
+
+  .fc-interactive .fc-question {
+    cursor: pointer; transition: all .2s;
+  }
+  .fc-interactive .fc-question:hover { background: #dbeafe; }
+
+  /* Interactive FC state */
+  .fc-check-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 2px solid var(--gray-200);
+    background: white;
+    cursor: pointer;
+    transition: all .2s;
+    width: 100%;
+    max-width: 560px;
+    text-align: left;
+  }
+  .fc-check-item:hover { border-color: var(--blue-light); }
+  .fc-check-item.pass  { border-color: var(--green); background: var(--green-light); }
+  .fc-check-item.fail  { border-color: var(--red);   background: var(--red-light); }
+  .fc-check-item .ci-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .fc-check-item .ci-body h4 { font-size: 14px; font-weight: 700; color: var(--gray-800); margin-bottom: 3px; }
+  .fc-check-item .ci-body p  { font-size: 12.5px; color: var(--gray-600); line-height: 1.5; }
+  .fc-check-btn-group { display: flex; gap: 8px; margin-top: 8px; }
+  .fc-yes-btn, .fc-no-btn {
+    padding: 5px 16px; border-radius: 20px;
+    font-size: 12px; font-weight: 700;
+    border: none; cursor: pointer; transition: all .15s;
+  }
+  .fc-yes-btn { background: var(--green-light); color: var(--green); }
+  .fc-yes-btn:hover { background: #a7f3d0; }
+  .fc-no-btn  { background: var(--red-light);   color: var(--red); }
+  .fc-no-btn:hover { background: #fecaca; }
+
+  #fc-verdict {
+    display: none;
+    width: 100%; max-width: 560px;
+    border-radius: 14px;
+    padding: 22px 26px;
+    text-align: center;
+    margin-top: 8px;
+    animation: fadeIn .4s ease;
+  }
+  #fc-verdict.show { display: block; }
+  #fc-verdict h3 { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+  #fc-verdict p  { font-size: 14px; line-height: 1.6; }
+  .verdict-pass   { background: var(--green-light); border: 2px solid #6ee7b7; color: #065f46; }
+  .verdict-revise { background: var(--amber-light); border: 2px solid #fcd34d; color: #78350f; }
+  #fc-reset-btn {
+    margin-top: 12px; padding: 8px 22px;
+    border-radius: 8px; border: none;
+    background: var(--gray-200); color: var(--gray-700);
+    font-size: 13px; font-weight: 700; cursor: pointer;
+  }
+  #fc-reset-btn:hover { background: var(--gray-300); }
+
+  /* ─── UTILS ────────────────────────────────── */
+  .mb-4  { margin-bottom: 16px; }
+  .mb-6  { margin-bottom: 24px; }
+  .mt-4  { margin-top: 16px; }
+  .gap-16{ gap: 16px; }
+  .flex  { display: flex; }
+  .flex-col { flex-direction: column; }
+
+  /* Pill list */
+  .pill-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill {
+    background: var(--blue-pale); color: var(--blue-mid);
+    border-radius: 20px; padding: 5px 14px; font-size: 13px; font-weight: 600;
+  }
+  .pill-green { background: var(--green-light); color: var(--green); }
+  .pill-amber { background: var(--amber-light); color: var(--amber); }
+  .pill-purple{ background: var(--purple-light); color: var(--purple); }
+
+  /* Quote */
+  blockquote {
+    border-left: 4px solid var(--blue-light);
+    padding: 12px 18px;
+    background: var(--blue-pale);
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    color: var(--blue-dark);
+    font-style: italic;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  /* Scrollbar */
+  .slide::-webkit-scrollbar { width: 5px; }
+  .slide::-webkit-scrollbar-track { background: transparent; }
+  .slide::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 3px; }
+
+  @media (max-width: 768px) {
+    .slide { padding: 24px 20px; }
+    .grid-2, .grid-3, .finer-grid, .compare { grid-template-columns: 1fr; }
+    .result-checklist { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div id="topbar">
+  <div class="title">How to Write a Research Question</div>
+  <div id="section-tabs">
+    <button class="sec-tab active" onclick="goToSlide(0)">Intro</button>
+    <button class="sec-tab" onclick="goToSlide(1)">What is it?</button>
+    <button class="sec-tab" onclick="goToSlide(2)">Types</button>
+    <button class="sec-tab" onclick="goToSlide(3)">Steps</button>
+    <button class="sec-tab" onclick="goToSlide(4)">FINER</button>
+    <button class="sec-tab" onclick="goToSlide(5)">Frameworks</button>
+    <button class="sec-tab" onclick="goToSlide(6)">Examples</button>
+    <button class="sec-tab" onclick="goToSlide(7)">Pitfalls</button>
+    <button class="sec-tab" onclick="goToSlide(8)">Alignment</button>
+    <button class="sec-tab" onclick="goToSlide(9)">Simulator</button>
+    <button class="sec-tab" onclick="goToSlide(10)">Flowchart</button>
+  </div>
+  <div class="nav-btns">
+    <button class="nav-btn" id="prev-btn" onclick="prevSlide()" disabled>← Prev</button>
+    <span id="slide-counter">1 / 11</span>
+    <button class="nav-btn" id="next-btn" onclick="nextSlide()">Next →</button>
+  </div>
+</div>
+<div id="progress-bar"><div id="progress-fill" style="width:9%"></div></div>
+
+<!-- SLIDES VIEWPORT -->
+<div id="slides-viewport">
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 0 — HERO
+  ══════════════════════════════════════════ -->
+  <div class="slide slide-hero active" id="slide-0">
+    <div class="hero-badge">Research Methods Guide · 2026</div>
+    <h1>How to Write a Strong Research Question</h1>
+    <p class="subtitle">A comprehensive, interactive guide covering types, frameworks, common pitfalls, and a step-by-step simulator to build your own research question.</p>
+    <div class="hero-chips">
+      <div class="hero-chip">📐 Types of Questions</div>
+      <div class="hero-chip">🔍 6-Step Process</div>
+      <div class="hero-chip">✅ FINER Criteria</div>
+      <div class="hero-chip">🧩 PICOT &amp; PEO Frameworks</div>
+      <div class="hero-chip">⚡ Interactive Simulator</div>
+      <div class="hero-chip">📊 Validation Flowchart</div>
+    </div>
+    <div style="margin-top:36px; opacity:.6; font-size:13px;">Use the Next button or section tabs above to navigate</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 1 — WHAT IS A RESEARCH QUESTION
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="slide-1">
+    <div class="slide-header">
+      <div class="slide-tag">Foundation</div>
+      <h2>What Is a Research Question?</h2>
+      <p class="lead">The central question a study is designed to answer — it connects topic, problem, evidence, and argument.</p>
+    </div>
+
+    <div class="highlight-box mb-4">
+      <p>A well-written research question identifies the <strong>issue</strong> being investigated, the <strong>population or case</strong>, the <strong>key variables or concepts</strong>, and the <strong>type of answer</strong> the study seeks. It gives the project boundaries.</p>
+    </div>
+
+    <div class="grid-2 mb-6">
+      <div class="card card-blue">
+        <h3>🎯 Why It Matters</h3>
+        <p>Your research question affects nearly every later decision: methodology, sample size, instruments, analysis plan, and final discussion. A weak question creates problems throughout the entire project.</p>
+      </div>
+      <div class="card card-teal">
+        <h3>📝 It's Provisional</h3>
+        <p>Research questions are provisional in early stages. As you read more sources, compare theories, and test feasibility, you may need to refine the wording. This is completely normal.</p>
+      </div>
+    </div>
+
+    <div class="tbl-wrap mb-6">
+      <table>
+        <thead><tr><th>Feature</th><th>What it means in practice</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Specific scope</strong></td><td>Names a defined population, setting, concept, variable, or time frame instead of asking about a broad topic in general.</td></tr>
+          <tr><td><strong>Researchable evidence</strong></td><td>Can be answered through credible sources, data collection, observation, experiments, interviews, surveys, or document analysis.</td></tr>
+          <tr><td><strong>Methodological fit</strong></td><td>Wording matches the intended approach — quantitative measurement, qualitative exploration, or mixed-methods integration.</td></tr>
+          <tr><td><strong>Feasibility</strong></td><td>The study can realistically be completed with available time, access, skills, funding, and ethical approvals.</td></tr>
+          <tr><td><strong>Scholarly value</strong></td><td>Addresses a gap, tests an assumption, extends prior work, or clarifies a meaningful problem in the field.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Element</th><th>Purpose</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Topic</strong></td><td>Names the general subject area</td><td>Social media and student attention</td></tr>
+          <tr><td><strong>Research Question</strong></td><td>Asks the specific question the study will answer</td><td>What effect does daily YouTube use have on the attention span of children aged under 16?</td></tr>
+          <tr><td><strong>Hypothesis</strong></td><td>States a testable expectation (quantitative research)</td><td>Higher daily YouTube use is associated with shorter attention spans among children aged under 16.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 2 — TYPES
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="slide-2">
+    <div class="slide-header">
+      <div class="slide-tag">Types</div>
+      <h2>Types of Research Questions</h2>
+      <p class="lead">Choose your type before planning — it determines wording, evidence, and logic.</p>
+    </div>
+
+    <div class="grid-3 mb-6">
+      <div class="card card-blue">
+        <div class="badge badge-blue mb-4" style="margin-bottom:12px">📊 Quantitative</div>
+        <h3>Measuring Variables</h3>
+        <p style="margin-bottom:10px">Focus on measurable variables, numerical data, and patterns that can be tested or described statistically.</p>
+        <ul>
+          <li><strong>Descriptive</strong> — What exists, how often it occurs</li>
+          <li><strong>Comparative</strong> — Differences between groups or conditions</li>
+          <li><strong>Relationship-based</strong> — Associations or trends between variables</li>
+        </ul>
+      </div>
+      <div class="card card-teal">
+        <div class="badge badge-teal mb-4" style="margin-bottom:12px">🗣️ Qualitative</div>
+        <h3>Understanding Meaning</h3>
+        <p style="margin-bottom:10px">Explore meanings, experiences, processes, beliefs, contexts, or social dynamics. Usually flexible and open-ended.</p>
+        <ul>
+          <li><strong>Exploratory</strong> — Limited prior research areas</li>
+          <li><strong>Explanatory</strong> — Why a process occurs</li>
+          <li><strong>Evaluative</strong> — How a program is experienced</li>
+          <li><strong>Emancipatory</strong> — Knowledge supporting action</li>
+        </ul>
+      </div>
+      <div class="card card-purple">
+        <div class="badge badge-purple mb-4" style="margin-bottom:12px">🔀 Mixed-Methods</div>
+        <h3>Integrating Both</h3>
+        <p style="margin-bottom:10px">Combine quantitative and qualitative approaches. Numbers show the pattern; qualitative evidence explains why it exists.</p>
+        <ul>
+          <li>Separate quantitative + qualitative questions, OR</li>
+          <li>Integrated question connecting both strands</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Research Approach</th><th>Best Used When You Need To</th><th>Typical Wording</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-blue">Quantitative</span></td>
+            <td>Measure variables, compare groups, test relationships, or analyze numerical trends</td>
+            <td><em>What is the relationship between X and Y among Z?</em></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-teal">Qualitative</span></td>
+            <td>Understand experiences, meanings, perceptions, practices, or processes in context</td>
+            <td><em>How do participants describe or experience X?</em></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-purple">Mixed-Methods</span></td>
+            <td>Combine numerical patterns with deeper explanation from interviews or observations</td>
+            <td><em>How do quantitative outcomes and participant experiences together explain X?</em></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 3 — STEPS
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="slide-3">
+    <div class="slide-header">
+      <div class="slide-tag">Process</div>
+      <h2>6 Steps to Developing a Good Research Question</h2>
+      <p class="lead">From broad interest to focused, researchable inquiry.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Start with a Broad Topic</h4>
+          <p>Choose a subject area large enough to explore but not so unfamiliar that you can't understand the literature. Brainstorm subtopics, create concept maps, or discuss with colleagues. Check that the topic is active in current scholarship — active conversations reveal gaps, debates, and unresolved questions.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Conduct Preliminary Research</h4>
+          <p>This first review doesn't need to be a full systematic review, but should be organized enough to show patterns. Look for recent studies, review articles, limitations sections, and calls for future research. These reveal underexplored groups, outdated assumptions, inconsistent findings, and contexts needing investigation.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Narrow Into Possible Questions</h4>
+          <p>Turn your broad topic into several candidate questions. Use "gap-spotting" — building questions from limitations in prior research — or problematization, which challenges assumptions behind existing theories. Professional experience can also reveal patterns worth studying.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Test with the FINER Criteria</h4>
+          <p>Evaluate each candidate question against Feasibility, Interest, Novelty, Ethics, and Relevance before choosing one. A question that fails on feasibility or ethics may prevent the study from being conducted at all.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h4>Use a Framework to Structure the Final Question</h4>
+          <p>Frameworks like PICOT, PEO, SPIDER, and CLIP help you avoid vague wording by forcing you to identify essential parts: population, intervention, comparison, outcome, and timeframe.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <h4>Ensure It Fits the Paper Structure</h4>
+          <p>The research question should guide every major section of the paper — title, abstract, introduction, method, results, and discussion. If a section doesn't help answer the question, it may be unnecessary or misdirected.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 4 — FINER
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="slide-4">
+    <div class="slide-header">
+      <div class="slide-tag">Criteria</div>
+      <h2>The FINER Criteria</h2>
+      <p class="lead">A practical checklist for judging whether a research question is suitable — introduced by Hulley et al.</p>
+    </div>
+
+    <div class="finer-grid mb-6">
+      <div class="finer-card fc-f">
+        <div class="letter">F</div>
+        <div class="word">Feasible</div>
+        <div class="desc">Can this study be completed with your time, skills, data access, funding, and ethical approvals?</div>
+      </div>
+      <div class="finer-card fc-i">
+        <div class="letter">I</div>
+        <div class="word">Interesting</div>
+        <div class="desc">Will you and your intended audience care about the answer? Sustained interest helps you complete the work.</div>
+      </div>
+      <div class="finer-card fc-n">
+        <div class="letter">N</div>
+        <div class="word">Novel</div>
+        <div class="desc">Does the question add, extend, test, or clarify knowledge — rather than merely repeat existing work?</div>
+      </div>
+      <div class="finer-card fc-e">
+        <div class="letter">E</div>
+        <div class="word">Ethical</div>
+        <div class="desc">Can the study be conducted without harming participants or violating ethical review standards?</div>
+      </div>
+      <div class="finer-card fc-r">
+        <div class="letter">R</div>
+        <div class="word">Relevant</div>
+        <div class="desc">Does the question matter to the field, a community, policy, practice, or future research?</div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>FINER Criterion</th><th>Question to Ask Yourself</th><th>Why It Matters</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Feasible</strong></td><td>Can I complete this study with my time, skills, data access, funding, and approvals?</td><td>A question that cannot be studied realistically will delay or derail the project.</td></tr>
+          <tr><td><strong>Interesting</strong></td><td>Will I and my intended audience care about the answer?</td><td>Sustained interest helps you complete the work and communicate its value.</td></tr>
+          <tr><td><strong>Novel</strong></td><td>Does the question add, extend, test, or clarify knowledge?</td><td>Original contribution is central to academic and professional research.</td></tr>
+          <tr><td><strong>Ethical</strong></td><td>Can the study be conducted without harming participants?</td><td>Ethical problems can prevent approval and damage the credibility of the work.</td></tr>
+          <tr><td><strong>Relevant</strong></td><td>Does the question matter to the field, community, policy, or practice?</td><td>Relevant questions produce findings that others can use or build on.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 5 — FRAMEWORKS
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="slide-5">
+    <div class="slide-header">
+      <div class="slide-tag">Frameworks</div>
+      <h2>Question-Building Frameworks</h2>
+      <p class="lead">Structured approaches that force clarity by identifying key components of your study.</p>
+    </div>
+
+    <div class="grid-2 mb-6">
+      <div class="card card-blue">
+        <div class="badge badge-blue" style="margin-bottom:10px">PICOT</div>
+        <h3>Best for: Clinical &amp; Intervention Research</h3>
+        <p style="margin-bottom:10px">Introduced by Richardson et al. Used when a study compares an intervention, indicator, or condition against another group or baseline.</p>
+        <div class="pill-list">
+          <span class="pill">P — Population</span>
+          <span class="pill">I — Intervention/Indicator</span>
+          <span class="pill">C — Comparison</span>
+          <span class="pill">O — Outcome</span>
+          <span class="pill">T — Timeframe</span>
+        </div>
+        <blockquote style="margin-top:12px; margin-bottom:0">
+          Among adults with Type 2 diabetes (P), does a low-carb diet (I) compared to a standard diet (C) reduce HbA1c levels (O) within 6 months (T)?
+        </blockquote>
+      </div>
+      <div class="card card-teal">
+        <div class="badge badge-teal" style="margin-bottom:10px">PEO</div>
+        <h3>Best for: Qualitative &amp; Observational Studies</h3>
+        <p style="margin-bottom:10px">Better when the study is qualitative and focuses on how a population experiences an exposure or condition.</p>
+        <div class="pill-list">
+          <span class="pill" style="background:var(--teal-light);color:var(--teal)">P — Population</span>
+          <span class="pill" style="background:var(--teal-light);color:var(--teal)">E — Exposure</span>
+          <span class="pill" style="background:var(--teal-light);color:var(--teal)">O — Outcome</span>
+        </div>
+        <blockquote style="margin-top:12px; margin-bottom:0">
+          How do first-generation college students (P) who experienced food insecurity (E) describe the impact on their academic performance (O)?
+        </blockquote>
+      </div>
+      <div class="card card-purple">
+        <div class="badge badge-purple" style="margin-bottom:10px">SPIDER</div>
+        <h3>Best for: Qualitative Evidence Synthesis</h3>
+        <p style="margin-bottom:10px">Used for studies where experience or perception is central to the inquiry.</p>
+        <div class="pill-list">
+          <span class="pill pill-purple">S — Sample</span>
+          <span class="pill pill-purple">PI — Phenomenon of Interest</span>
+          <span class="pill pill-purple">D — Design</span>
+          <span class="pill pill-purple">E — Evaluation</span>
+          <span class="pill pill-purple">R — Research Type</span>
+        </div>
+      </div>
+      <div class="card card-amber">
+        <div class="badge badge-amber" style="margin-bottom:10px">CLIP</div>
+        <h3>Best for: Service Delivery &amp; Applied Research</h3>
+        <p style="margin-bottom:10px">Useful for practice improvement and applied professional research contexts.</p>
+        <div class="pill-list">
+          <span class="pill pill-amber">C — Client Group</span>
+          <span class="pill pill-amber">L — Location of Service</span>
+          <span class="pill pill-amber">I — Improvement/Information/Innovation</span>
+          <span class="pill pill-amber">P — Professionals</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Framework</th><th>Elements</th><th>Best Fit</th></tr></thead>
+        <tbody>
+          <tr><td><strong>PICOT</strong></td><td>Population, Intervention, Comparison, Outcome, Timeframe</td><td>Clinical research, intervention studies, evidence-based practice</td></tr>
+          <tr><td><strong>PEO</strong></td><td>Population, Exposure, Outcome</td><td>Qualitative &amp; observational studies on experiences or exposure</td></tr>
+          <tr><td><strong>SPIDER</strong></td><td>Sample, Phenomenon of Interest, Design, Evaluation, Research Type</td><td>Qualitative evidence synthesis and perception-centered studies</td></tr>
+          <tr><td><strong>CLIP</strong></td><td>Client Group, Location, Improvement/Innovation, Professionals</td><td>Service delivery, practice improvement, applied professional research</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 6 — EXAMPLES
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="slide-6">
+    <div class="slide-header">
+      <div class="slide-tag">Examples</div>
+      <h2>Good vs. Bad Research Questions</h2>
+      <p class="lead">Specificity, evidence, and scope make the difference.</p>
+    </div>
+
+    <div class="card mb-4">
+      <h3>Example 1: Too Broad vs. Focused</h3>
+      <div class="compare mt-4">
+        <div class="compare-box compare-weak">
+          <div class="compare-label">❌ Weak</div>
+          <p>"How does social media affect people's behavior?"<br><br><small>Too broad — "social media" and "people's behavior" could refer to countless platforms, groups, and outcomes.</small></p>
+        </div>
+        <div class="compare-box compare-strong">
+          <div class="compare-label">✅ Stronger</div>
+          <p>"What effect does the daily use of YouTube have on the attention span of children aged under 16?"<br><br><small>Names the platform, behavior of interest, and population.</small></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <h3>Example 2: Yes/No vs. Analytical</h3>
+      <div class="compare mt-4">
+        <div class="compare-box compare-weak">
+          <div class="compare-label">❌ Weak</div>
+          <p>"Has there been an increase in childhood obesity in the US in the past 10 years?"<br><br><small>Can be answered with a simple yes or no — requires no analysis.</small></p>
+        </div>
+        <div class="compare-box compare-strong">
+          <div class="compare-label">✅ Stronger</div>
+          <p>"How have school intervention programs and parental education levels affected the rate of childhood obesity among 1st to 6th-grade students?"<br><br><small>Requires analysis of interventions, parental education, and obesity rates. Invites explanation.</small></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Example 3: Method Posing as a Question</h3>
+      <div class="compare mt-4">
+        <div class="compare-box compare-weak">
+          <div class="compare-label">❌ Weak</div>
+          <p>"Can I conduct interviews with teachers about online learning?"<br><br><small>Describes a method, not a research problem.</small></p>
+        </div>
+        <div class="compare-box compare-strong">
+          <div class="compare-label">✅ Stronger</div>
+          <p>"How do middle school teachers describe the challenges of maintaining student engagement during online learning?"<br><br><small>Identifies the group, setting, phenomenon, and type of evidence needed.</small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 7 — PITFALLS
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="slide-7">
+    <div class="slide-header">
+      <div class="slide-tag">Pitfalls</div>
+      <h2>Common Pitfalls to Avoid</h2>
+      <p class="lead">Many research problems begin with a question that seems reasonable but fails under closer review.</p>
+    </div>
+
+    <div class="tbl-wrap mb-6">
+      <table>
+        <thead><tr><th>Common Mistake</th><th>Why It Weakens the Study</th><th>Better Approach</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Question is too broad</strong></td>
+            <td>The project becomes unfocused and collects unrelated evidence</td>
+            <td>Define the population, context, variable, concept, or time frame</td>
+          </tr>
+          <tr>
+            <td><strong>Not feasible</strong></td>
+            <td>Researcher may lack access to participants, data, funding, or time</td>
+            <td>Confirm access and resources before finalizing the question</td>
+          </tr>
+          <tr>
+            <td><strong>Vague wording</strong></td>
+            <td>Readers don't understand what is being measured or compared</td>
+            <td>Replace abstract terms with precise concepts that can be studied</td>
+          </tr>
+          <tr>
+            <td><strong>Skipping the literature review</strong></td>
+            <td>The study may repeat what has already been answered</td>
+            <td>Review current and foundational scholarship before deciding on final wording</td>
+          </tr>
+          <tr>
+            <td><strong>Ignoring ethical concerns</strong></td>
+            <td>The study may risk harm, violate privacy, or fail institutional review</td>
+            <td>Consider participant risk, consent, confidentiality, and review board expectations early</td>
+          </tr>
+          <tr>
+            <td><strong>Confusing contribution with question</strong></td>
+            <td>"This study will improve policy" doesn't identify what will be investigated</td>
+            <td>Ask a question evidence can answer, then explain the contribution later</td>
+          </tr>
+          <tr>
+            <td><strong>Framing a method as the question</strong></td>
+            <td>"Can I survey students?" identifies a tool, not a research problem</td>
+            <td>Ask what the survey will help you discover, measure, compare, or explain</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-2">
+      <div class="card card-green">
+        <h3>✅ Final Checklist</h3>
+        <ul>
+          <li>Can this be answered with evidence rather than opinion alone?</li>
+          <li>Have I reviewed enough current and foundational literature?</li>
+          <li>Does the wording clearly identify the population, setting, or phenomenon?</li>
+          <li>Is the scope realistic for my assignment or timeline?</li>
+          <li>Do I have access to the data, participants, or documents needed?</li>
+          <li>Does the question require ethical review or consent protections?</li>
+          <li>Does the question align with my objective, method, and expected outcome?</li>
+        </ul>
+      </div>
+      <div class="card card-amber">
+        <h3>💡 Key Reminders</h3>
+        <ul>
+          <li><strong>Expect revision</strong> — a strong question often emerges after several rounds of reading and narrowing</li>
+          <li><strong>Stay current</strong> — track recent studies and methodological changes</li>
+          <li><strong>Use concise wording</strong> — remove terms that don't affect meaning</li>
+          <li><strong>Seek expert input</strong> — mentors and librarians can spot problems you miss</li>
+          <li><strong>Don't mistake method for question</strong></li>
+          <li><strong>Don't write anticipated contribution as the question</strong></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 8 — ALIGNMENT
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="slide-8">
+    <div class="slide-header">
+      <div class="slide-tag">Alignment</div>
+      <h2>Aligning Your Question with Study Objectives</h2>
+      <p class="lead">Your research question should match the objective, expected outcomes, and methods — misalignment creates confusing papers.</p>
+    </div>
+
+    <div class="steps mb-6">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><h4>State the Main Objective</h4><p>Write one sentence explaining what the study aims to accomplish.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body"><h4>Identify the Expected Outcome</h4><p>Decide what type of result would answer the question — a measured difference, described experience, observed pattern, or tested relationship.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body"><h4>Match Wording to Method</h4><p>Use quantitative wording for measurement, qualitative wording for meaning and experience, and mixed-methods wording when both are integrated.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body"><h4>Check Every Major Section</h4><p>Literature review, sample, data collection, analysis, and discussion should all help answer the same question.</p></div>
+      </div>
+    </div>
+
+    <div class="grid-2 mb-4">
+      <div class="card card-red">
+        <h3>❌ Misaligned Example</h3>
+        <p><strong>Objective:</strong> To assess the impact of diet on athletic performance.</p>
+        <p style="margin-top:8px"><strong>Question:</strong> How do athletes perceive dietary guidelines?</p>
+        <p style="margin-top:8px; font-size:13px; color:var(--gray-600)">This explores perceptions, not the direct effect of diet. It may be valid qualitatively, but it doesn't match the stated objective.</p>
+      </div>
+      <div class="card card-green">
+        <h3>✅ Aligned Example</h3>
+        <p><strong>Objective:</strong> To assess the impact of diet on athletic performance.</p>
+        <p style="margin-top:8px"><strong>Question:</strong> How does adherence to a high-protein diet affect endurance levels in marathon runners?</p>
+        <p style="margin-top:8px; font-size:13px; color:var(--gray-600)">Names the dietary factor, outcome, and population — gives the study a clear path from question to method to findings.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Why Alignment Matters</h3>
+      <div class="grid-2 mt-4" style="margin-top:12px">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <span style="font-size:20px">🎯</span>
+          <div><strong style="color:var(--blue-dark)">Clarity</strong><p style="font-size:13px;color:var(--gray-600)">Readers quickly understand what the study is trying to answer</p></div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <span style="font-size:20px">🔍</span>
+          <div><strong style="color:var(--blue-dark)">Focus</strong><p style="font-size:13px;color:var(--gray-600)">Avoid collecting evidence that doesn't serve the project</p></div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <span style="font-size:20px">💡</span>
+          <div><strong style="color:var(--blue-dark)">Usability</strong><p style="font-size:13px;color:var(--gray-600)">Findings are easier to interpret because they respond directly to the stated objective</p></div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <span style="font-size:20px">✅</span>
+          <div><strong style="color:var(--blue-dark)">Credibility</strong><p style="font-size:13px;color:var(--gray-600)">Reviewers see a logical connection between question, design, and conclusions</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 9 — SIMULATOR
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="slide-9" style="padding: 24px 36px;">
+    <div class="slide-header" style="margin-bottom:16px">
+      <div class="slide-tag">Interactive</div>
+      <h2>Research Question Builder</h2>
+      <p class="lead">Answer the prompts below to generate your own research question.</p>
+    </div>
+
+    <div id="sim-container">
+      <div id="sim-header">
+        <h3>⚡ Research Question Simulator</h3>
+        <p>Step through 8 guided questions — your custom research question will be built at the end.</p>
+        <div id="sim-progress-bar" style="margin-top:12px">
+          <div id="sim-progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div id="sim-body">
+        <!-- Step 1 -->
+        <div class="sim-step active" id="sim-step-1">
+          <div class="sim-q-label"><span>Step 1 of 8</span> — Your Topic</div>
+          <div class="sim-question">What is the broad topic you want to study?</div>
+          <div class="sim-hint">📌 Think of a general area of interest: e.g., "mental health in college students", "climate policy", "remote work productivity"</div>
+          <textarea class="sim-input" id="s1-topic" rows="2" placeholder="e.g., Social media use among teenagers..."></textarea>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="sim-step" id="sim-step-2">
+          <div class="sim-q-label"><span>Step 2 of 8</span> — Research Approach</div>
+          <div class="sim-question">What type of research are you conducting?</div>
+          <div class="sim-radio-group">
+            <label class="sim-radio" onclick="selectRadio(this,'s2-method','quantitative')">
+              <input type="radio" name="s2-method" value="quantitative">
+              <div><div class="r-label">📊 Quantitative</div><div class="r-desc">Measuring variables, comparing groups, testing relationships using numbers and statistics</div></div>
+            </label>
+            <label class="sim-radio" onclick="selectRadio(this,'s2-method','qualitative')">
+              <input type="radio" name="s2-method" value="qualitative">
+              <div><div class="r-label">🗣️ Qualitative</div><div class="r-desc">Exploring meanings, experiences, perceptions, or processes — open-ended and interpretive</div></div>
+            </label>
+            <label class="sim-radio" onclick="selectRadio(this,'s2-method','mixed')">
+              <input type="radio" name="s2-method" value="mixed">
+              <div><div class="r-label">🔀 Mixed-Methods</div><div class="r-desc">Combining numerical data with rich qualitative explanation</div></div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="sim-step" id="sim-step-3">
+          <div class="sim-q-label"><span>Step 3 of 8</span> — Population</div>
+          <div class="sim-question">Who or what is the focus of your study?</div>
+          <div class="sim-hint">🎯 Be specific — name age group, demographic, institution, location, or type of subject. Example: "first-year university students in the US aged 18–22" or "small businesses in rural Michigan"</div>
+          <textarea class="sim-input" id="s3-population" rows="2" placeholder="e.g., high school students aged 14–18 in urban schools..."></textarea>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="sim-step" id="sim-step-4">
+          <div class="sim-q-label"><span>Step 4 of 8</span> — Variable / Concept</div>
+          <div class="sim-question">What is the main variable, concept, or phenomenon you are investigating?</div>
+          <div class="sim-hint">💡 For quantitative: name the independent and/or dependent variable (e.g., "screen time" and "academic performance"). For qualitative: name the experience or phenomenon (e.g., "lived experience of burnout").</div>
+          <textarea class="sim-input" id="s4-variable" rows="2" placeholder="e.g., daily social media usage and self-reported anxiety levels..."></textarea>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="sim-step" id="sim-step-5">
+          <div class="sim-q-label"><span>Step 5 of 8</span> — Context / Setting</div>
+          <div class="sim-question">What is the context, setting, or time frame of your study?</div>
+          <div class="sim-hint">📍 Include where, when, or under what conditions the study takes place. Example: "during the 2024–2025 academic year", "in outpatient clinical settings", "post-pandemic remote work environments"</div>
+          <textarea class="sim-input" id="s5-context" rows="2" placeholder="e.g., in urban public schools during the 2025–2026 school year..."></textarea>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="sim-step" id="sim-step-6">
+          <div class="sim-q-label"><span>Step 6 of 8</span> — Question Type</div>
+          <div class="sim-question">What kind of answer are you seeking?</div>
+          <div class="sim-radio-group">
+            <label class="sim-radio" onclick="selectRadio(this,'s6-qtype','relationship')">
+              <input type="radio" name="s6-qtype" value="relationship">
+              <div><div class="r-label">🔗 Relationship / Association</div><div class="r-desc">Is there a link, correlation, or relationship between variables?</div></div>
+            </label>
+            <label class="sim-radio" onclick="selectRadio(this,'s6-qtype','effect')">
+              <input type="radio" name="s6-qtype" value="effect">
+              <div><div class="r-label">⚡ Effect / Impact</div><div class="r-desc">Does one thing cause, influence, or affect another?</div></div>
+            </label>
+            <label class="sim-radio" onclick="selectRadio(this,'s6-qtype','description')">
+              <input type="radio" name="s6-qtype" value="description">
+              <div><div class="r-label">📝 Description / Exploration</div><div class="r-desc">What is happening? What does the experience look like?</div></div>
+            </label>
+            <label class="sim-radio" onclick="selectRadio(this,'s6-qtype','comparison')">
+              <input type="radio" name="s6-qtype" value="comparison">
+              <div><div class="r-label">⚖️ Comparison</div><div class="r-desc">Are there differences between two groups, programs, or conditions?</div></div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Step 7 -->
+        <div class="sim-step" id="sim-step-7">
+          <div class="sim-q-label"><span>Step 7 of 8</span> — Gap / Rationale</div>
+          <div class="sim-question">Why is this study needed? What gap or problem does it address?</div>
+          <div class="sim-hint">📚 Think about what's missing in existing research — an understudied group, conflicting findings, outdated methods, a new context, or an unresolved debate.</div>
+          <textarea class="sim-input" id="s7-gap" rows="3" placeholder="e.g., While much research examines adults, little is known about how social media affects younger teenagers specifically..."></textarea>
+        </div>
+
+        <!-- Step 8 -->
+        <div class="sim-step" id="sim-step-8">
+          <div class="sim-q-label"><span>Step 8 of 8</span> — FINER Check</div>
+          <div class="sim-question">Before finalizing, check your proposed question against FINER:</div>
+          <div class="grid-2" style="gap:10px">
+            <div style="display:flex;align-items:center;gap:10px;background:var(--gray-50);border-radius:8px;padding:10px 14px">
+              <input type="checkbox" id="finer-f" style="accent-color:var(--blue-mid);width:16px;height:16px">
+              <label for="finer-f" style="font-size:13.5px;font-weight:600;color:var(--gray-700);cursor:pointer"><strong style="color:var(--blue-mid)">F</strong>easible — I can realistically conduct this study</label>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;background:var(--gray-50);border-radius:8px;padding:10px 14px">
+              <input type="checkbox" id="finer-i" style="accent-color:var(--green);width:16px;height:16px">
+              <label for="finer-i" style="font-size:13.5px;font-weight:600;color:var(--gray-700);cursor:pointer"><strong style="color:var(--green)">I</strong>nteresting — I and my audience will care about the answer</label>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;background:var(--gray-50);border-radius:8px;padding:10px 14px">
+              <input type="checkbox" id="finer-n" style="accent-color:var(--purple);width:16px;height:16px">
+              <label for="finer-n" style="font-size:13.5px;font-weight:600;color:var(--gray-700);cursor:pointer"><strong style="color:var(--purple)">N</strong>ovel — This adds or extends existing knowledge</label>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;background:var(--gray-50);border-radius:8px;padding:10px 14px">
+              <input type="checkbox" id="finer-e" style="accent-color:var(--amber);width:16px;height:16px">
+              <label for="finer-e" style="font-size:13.5px;font-weight:600;color:var(--gray-700);cursor:pointer"><strong style="color:var(--amber)">E</strong>thical — No harm to participants, ethical review considered</label>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;background:var(--gray-50);border-radius:8px;padding:10px 14px;grid-column:1/-1">
+              <input type="checkbox" id="finer-r" style="accent-color:var(--red);width:16px;height:16px">
+              <label for="finer-r" style="font-size:13.5px;font-weight:600;color:var(--gray-700);cursor:pointer"><strong style="color:var(--red)">R</strong>elevant — Matters to the field, policy, community, or practice</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- RESULT -->
+        <div id="sim-result">
+          <div class="result-rq">
+            <div class="rq-label">Your Generated Research Question</div>
+            <div class="rq-text" id="rq-output"></div>
+          </div>
+          <div class="result-checklist" id="rq-checklist"></div>
+          <div class="result-tips" id="rq-tips"></div>
+          <div style="display:flex;gap:10px;justify-content:center">
+            <button class="sim-btn sim-btn-secondary" onclick="resetSim()">🔄 Start Over</button>
+            <button class="sim-btn sim-btn-primary" onclick="copyRQ()">📋 Copy Question</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="sim-footer">
+        <button class="sim-btn sim-btn-secondary" id="sim-prev-btn" onclick="simPrev()" style="display:none">← Back</button>
+        <div id="sim-step-info" style="font-size:13px;color:var(--gray-400)">Step 1 of 8</div>
+        <button class="sim-btn sim-btn-primary" id="sim-next-btn" onclick="simNext()">Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 10 — FLOWCHART
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="slide-10" style="padding: 24px 36px;">
+    <div class="slide-header" style="margin-bottom:16px">
+      <div class="slide-tag">Validation</div>
+      <h2>Research Question Validation Flowchart</h2>
+      <p class="lead">Interactively check each criterion — get a verdict at the end.</p>
+    </div>
+
+    <div id="flowchart-wrap">
+      <div id="fc-header">
+        <h3>📊 Is Your Research Question Ready?</h3>
+        <p>Click YES or NO for each checkpoint below. A verdict will appear when all checks are complete.</p>
+      </div>
+      <div id="fc-body">
+
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0;width:100%;max-width:560px">
+
+          <!-- Start node -->
+          <div class="fc-node fc-start" style="margin-bottom:0">🚀 Start: Draft Research Question Written</div>
+          <div style="width:2px;height:20px;background:var(--gray-300);margin:0 auto"></div>
+
+          <!-- Check items -->
+          <div id="fc-checks" style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:560px">
+            <!-- JS will render these -->
+          </div>
+
+          <div id="fc-verdict">
+            <h3 id="fc-verdict-title"></h3>
+            <p id="fc-verdict-text"></p>
+            <button id="fc-reset-btn" onclick="resetFC()">🔄 Reset Flowchart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /slides-viewport -->
+
+<script>
+// ─── SLIDE NAVIGATION ───────────────────────────────────────
+let currentSlide = 0;
+const totalSlides = 11;
+
+function goToSlide(n) {
+  document.getElementById('slide-' + currentSlide).classList.remove('active');
+  document.querySelectorAll('.sec-tab')[currentSlide].classList.remove('active');
+  currentSlide = n;
+  document.getElementById('slide-' + currentSlide).classList.add('active');
+  document.querySelectorAll('.sec-tab')[currentSlide].classList.add('active');
+  document.getElementById('slide-counter').textContent = (currentSlide + 1) + ' / ' + totalSlides;
+  document.getElementById('prev-btn').disabled = currentSlide === 0;
+  document.getElementById('next-btn').disabled = currentSlide === totalSlides - 1;
+  document.getElementById('progress-fill').style.width = ((currentSlide + 1) / totalSlides * 100) + '%';
+}
+
+function prevSlide() { if (currentSlide > 0) goToSlide(currentSlide - 1); }
+function nextSlide() { if (currentSlide < totalSlides - 1) goToSlide(currentSlide + 1); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') nextSlide();
+  if (e.key === 'ArrowLeft')  prevSlide();
+});
+
+// ─── SIMULATOR ───────────────────────────────────────────────
+let simCurrentStep = 1;
+const simTotalSteps = 8;
+const simAnswers = {};
+
+function selectRadio(el, name, value) {
+  document.querySelectorAll(`[name="${name}"]`).forEach(r => r.closest('.sim-radio').classList.remove('selected'));
+  el.classList.add('selected');
+  simAnswers[name] = value;
+}
+
+function simNext() {
+  if (simCurrentStep === simTotalSteps) {
+    buildRQ();
+    return;
+  }
+  if (!validateSimStep()) return;
+  document.getElementById('sim-step-' + simCurrentStep).classList.remove('active');
+  simCurrentStep++;
+  document.getElementById('sim-step-' + simCurrentStep).classList.add('active');
+  updateSimUI();
+}
+
+function simPrev() {
+  if (simCurrentStep <= 1) return;
+  document.getElementById('sim-step-' + simCurrentStep).classList.remove('active');
+  simCurrentStep--;
+  document.getElementById('sim-step-' + simCurrentStep).classList.add('active');
+  updateSimUI();
+}
+
+function validateSimStep() {
+  if (simCurrentStep === 1) { return !!document.getElementById('s1-topic').value.trim(); }
+  if (simCurrentStep === 2) { return !!document.querySelector('[name="s2-method"]:checked'); }
+  if (simCurrentStep === 3) { return !!document.getElementById('s3-population').value.trim(); }
+  if (simCurrentStep === 4) { return !!document.getElementById('s4-variable').value.trim(); }
+  if (simCurrentStep === 5) { return !!document.getElementById('s5-context').value.trim(); }
+  if (simCurrentStep === 6) { return !!document.querySelector('[name="s6-qtype"]:checked'); }
+  if (simCurrentStep === 7) { return !!document.getElementById('s7-gap').value.trim(); }
+  return true;
+}
+
+function updateSimUI() {
+  const pct = ((simCurrentStep - 1) / simTotalSteps * 100);
+  document.getElementById('sim-progress-fill').style.width = pct + '%';
+  document.getElementById('sim-step-info').textContent = 'Step ' + simCurrentStep + ' of ' + simTotalSteps;
+  document.getElementById('sim-prev-btn').style.display = simCurrentStep > 1 ? 'block' : 'none';
+  document.getElementById('sim-next-btn').textContent = simCurrentStep === simTotalSteps ? '⚡ Generate My Research Question' : 'Next →';
+}
+
+function buildRQ() {
+  const topic    = document.getElementById('s1-topic').value.trim();
+  const method   = document.querySelector('[name="s2-method"]:checked')?.value || 'qualitative';
+  const pop      = document.getElementById('s3-population').value.trim();
+  const variable = document.getElementById('s4-variable').value.trim();
+  const context  = document.getElementById('s5-context').value.trim();
+  const qtype    = document.querySelector('[name="s6-qtype"]:checked')?.value || 'description';
+  const gap      = document.getElementById('s7-gap').value.trim();
+
+  const fChecked = ['finer-f','finer-i','finer-n','finer-e','finer-r'].filter(id => document.getElementById(id).checked);
+
+  let starter = '';
+  if (method === 'quantitative') {
+    if (qtype === 'relationship') starter = 'What is the relationship between';
+    else if (qtype === 'effect')  starter = 'What effect does';
+    else if (qtype === 'comparison') starter = 'How does';
+    else starter = 'To what extent does';
+  } else if (method === 'qualitative') {
+    if (qtype === 'description') starter = 'How do';
+    else if (qtype === 'effect') starter = 'In what ways does';
+    else if (qtype === 'comparison') starter = 'How do';
+    else starter = 'How do';
+  } else {
+    starter = 'How do';
+  }
+
+  let rq = '';
+  if (method === 'quantitative') {
+    if (qtype === 'effect') {
+      rq = `${starter} ${variable} affect ${pop}${context ? ' ' + context : ''}?`;
+    } else if (qtype === 'relationship') {
+      rq = `${starter} ${variable} among ${pop}${context ? ' ' + context : ''}?`;
+    } else if (qtype === 'comparison') {
+      rq = `${starter} ${variable} differ among ${pop}${context ? ' ' + context : ''}?`;
+    } else {
+      rq = `To what extent does ${variable} among ${pop}${context ? ' ' + context : ''}?`;
+    }
+  } else if (method === 'qualitative') {
+    rq = `${starter} ${pop} experience ${variable}${context ? ' ' + context : ''}?`;
+  } else {
+    rq = `How do ${variable} and the lived experiences of ${pop} together explain ${topic}${context ? ' ' + context : ''}?`;
+  }
+
+  document.getElementById('rq-output').textContent = rq;
+
+  // Checklist
+  const checks = [
+    { icon: '👥', label: 'Population', val: pop },
+    { icon: '🔬', label: 'Variable / Concept', val: variable },
+    { icon: '📍', label: 'Context / Setting', val: context },
+    { icon: '🧪', label: 'Method Alignment', val: method.charAt(0).toUpperCase() + method.slice(1) },
+    { icon: '❓', label: 'Question Type', val: qtype.charAt(0).toUpperCase() + qtype.slice(1) },
+    { icon: '📚', label: 'Research Gap', val: gap.length > 60 ? gap.substring(0,60)+'…' : gap },
+  ];
+  document.getElementById('rq-checklist').innerHTML = checks.map(c => `
+    <div class="check-item">
+      <div class="check-icon">${c.icon}</div>
+      <div><strong>${c.label}</strong><p>${c.val}</p></div>
+    </div>`).join('');
+
+  // FINER tips
+  const finerNames = ['Feasible','Interesting','Novel','Ethical','Relevant'];
+  const unchecked = ['finer-f','finer-i','finer-n','finer-e','finer-r'].map((id,i) => document.getElementById(id).checked ? null : finerNames[i]).filter(Boolean);
+  let tipsHtml = '';
+  if (unchecked.length > 0) {
+    tipsHtml = `<h4>⚠️ Review these FINER criteria before proceeding:</h4><ul>${unchecked.map(u=>`<li><strong>${u}:</strong> ${finerTip(u)}</li>`).join('')}</ul>`;
+  } else {
+    tipsHtml = `<h4>✅ Your question passed all FINER criteria!</h4><p style="font-size:13px;color:var(--gray-700);margin-top:6px">Great work. Consider sharing it with a mentor or peer reviewer for additional feedback before data collection.</p>`;
+  }
+  document.getElementById('rq-tips').innerHTML = tipsHtml;
+
+  // Show result
+  document.getElementById('sim-step-' + simCurrentStep).classList.remove('active');
+  document.getElementById('sim-result').classList.add('visible');
+  document.getElementById('sim-footer').style.display = 'none';
+  document.getElementById('sim-progress-fill').style.width = '100%';
+}
+
+function finerTip(criterion) {
+  const tips = {
+    'Feasible':    'Confirm you have realistic access to participants, data, and resources for this study.',
+    'Interesting': 'Consider how this question matters to your field and whether you can sustain engagement through the project.',
+    'Novel':       'Review recent literature to ensure this question extends or adds to existing knowledge rather than repeating it.',
+    'Ethical':     'Consider participant risks, consent processes, privacy protections, and any institutional review requirements.',
+    'Relevant':    'Connect the question explicitly to a recognized gap, debate, or practical need in your field.'
+  };
+  return tips[criterion] || '';
+}
+
+function resetSim() {
+  simCurrentStep = 1;
+  document.getElementById('sim-result').classList.remove('visible');
+  document.getElementById('sim-footer').style.display = 'flex';
+  document.querySelectorAll('.sim-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('sim-step-1').classList.add('active');
+  document.querySelectorAll('.sim-input').forEach(i => i.value = '');
+  document.querySelectorAll('.sim-radio').forEach(r => r.classList.remove('selected'));
+  document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+  document.querySelectorAll('input[type=checkbox]').forEach(c => c.checked = false);
+  updateSimUI();
+  document.getElementById('sim-prev-btn').style.display = 'none';
+  document.getElementById('sim-footer').style.display = 'flex';
+}
+
+function copyRQ() {
+  const text = document.getElementById('rq-output').textContent;
+  navigator.clipboard.writeText(text).then(() => alert('Research question copied to clipboard!'));
+}
+
+// ─── FLOWCHART ───────────────────────────────────────────────
+const fcChecks = [
+  {
+    icon: '🎯',
+    title: 'Is the question specific and focused?',
+    desc: 'Does it name a defined population, setting, variable, concept, or time frame — rather than a broad topic?',
+    tips: { no: 'Narrow your question by specifying population, context, variable, or time frame.' }
+  },
+  {
+    icon: '🔍',
+    title: 'Can it be answered with evidence?',
+    desc: 'Can it be answered through data collection, observation, experiments, interviews, surveys, or document analysis?',
+    tips: { no: 'Reframe so the question points toward observable, collectible, or analyzable evidence.' }
+  },
+  {
+    icon: '📐',
+    title: 'Does the wording match your method?',
+    desc: 'Quantitative questions measure; qualitative questions explore meanings; mixed-methods questions integrate both.',
+    tips: { no: 'Adjust wording to align with your research design (e.g., "How does X affect Y?" vs. "How do participants experience X?").' }
+  },
+  {
+    icon: '✅',
+    title: 'Is it feasible to study?',
+    desc: 'Can it realistically be completed with your available time, skills, data access, funding, and ethical approvals?',
+    tips: { no: 'Reduce scope, narrow the population, or verify resource access before proceeding.' }
+  },
+  {
+    icon: '🆕',
+    title: 'Does it add something new?',
+    desc: 'Does the question extend, test, clarify, or fill a gap in existing knowledge — rather than merely repeat prior work?',
+    tips: { no: 'Conduct a deeper literature review to identify what has not yet been studied or resolved.' }
+  },
+  {
+    icon: '⚖️',
+    title: 'Is it ethically sound?',
+    desc: 'Can the study be conducted without harming participants or violating institutional review standards?',
+    tips: { no: 'Consult your IRB or ethics board, revise the study design, and ensure consent and confidentiality protections.' }
+  },
+  {
+    icon: '🌐',
+    title: 'Is it relevant to the field?',
+    desc: 'Does it address a problem, gap, debate, or need recognized by scholars, practitioners, or policymakers?',
+    tips: { no: 'Connect the question explicitly to a recognized gap, debate, or practical need identified in the literature.' }
+  },
+  {
+    icon: '🔗',
+    title: 'Is it aligned with your objective and method?',
+    desc: 'Does the question match your stated study objective, expected outcomes, and analysis plan?',
+    tips: { no: 'Restate your objective, then revise the question wording to point toward the same goal and method.' }
+  }
+];
+
+const fcState = new Array(fcChecks.length).fill(null); // null = unanswered
+
+function renderFC() {
+  const container = document.getElementById('fc-checks');
+  container.innerHTML = '';
+  fcChecks.forEach((c, i) => {
+    const state = fcState[i];
+    const stateClass = state === true ? 'pass' : state === false ? 'fail' : '';
+    const stateIcon = state === true ? '✅' : state === false ? '❌' : c.icon;
+    const div = document.createElement('div');
+    div.className = 'fc-check-item ' + stateClass;
+    div.innerHTML = `
+      <div class="ci-icon">${stateIcon}</div>
+      <div class="ci-body">
+        <h4>${c.title}</h4>
+        <p>${c.desc}</p>
+        ${state === false ? `<p style="margin-top:6px;font-size:12px;color:#92400e;background:#fef3c7;padding:6px 10px;border-radius:6px">💡 ${c.tips.no}</p>` : ''}
+        ${state === null ? `<div class="fc-check-btn-group">
+          <button class="fc-yes-btn" onclick="fcAnswer(${i}, true)">✅ Yes</button>
+          <button class="fc-no-btn"  onclick="fcAnswer(${i}, false)">❌ No</button>
+        </div>` : ''}
+      </div>`;
+    container.appendChild(div);
+
+    // Arrow between items
+    if (i < fcChecks.length - 1 && state !== null) {
+      const arrow = document.createElement('div');
+      arrow.style.cssText = 'width:2px;height:16px;background:var(--gray-300);margin:0 auto;';
+      container.appendChild(arrow);
+    }
+  });
+  checkFCVerdict();
+}
+
+function fcAnswer(i, answer) {
+  fcState[i] = answer;
+  renderFC();
+}
+
+function checkFCVerdict() {
+  const answered = fcState.filter(v => v !== null).length;
+  if (answered < fcChecks.length) return;
+
+  const failCount = fcState.filter(v => v === false).length;
+  const verdict = document.getElementById('fc-verdict');
+  const title   = document.getElementById('fc-verdict-title');
+  const text    = document.getElementById('fc-verdict-text');
+
+  verdict.className = 'show ' + (failCount === 0 ? 'verdict-pass' : 'verdict-revise');
+
+  if (failCount === 0) {
+    title.textContent = '🎉 Your Research Question is Ready!';
+    text.textContent  = 'Your question passed all 8 validation checks. You can proceed with confidence to your literature review, methodology design, and proposal writing.';
+  } else if (failCount <= 2) {
+    title.textContent = '⚠️ Minor Revisions Needed';
+    text.innerHTML    = `Your question passed ${fcChecks.length - failCount} of ${fcChecks.length} checks. Review the <strong>${failCount} flagged item${failCount>1?'s':''}</strong> above and revise your question before proceeding.`;
+  } else {
+    title.textContent = '🔄 Significant Revision Required';
+    text.innerHTML    = `Your question needs work on <strong>${failCount} criteria</strong>. Use the tips above to refine it, then return to the flowchart to re-check.`;
+  }
+}
+
+function resetFC() {
+  fcState.fill(null);
+  document.getElementById('fc-verdict').className = '';
+  renderFC();
+}
+
+// Initialize
+renderFC();
+</script>
+</body>
+</html>
